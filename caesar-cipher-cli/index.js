@@ -9,8 +9,8 @@ program
   .option('-a, --action <value>', 'an action encode/decode', helper.validAction)
   .parse(process.argv);
 
-console.log(program.opts());
+// console.log(program.opts());
 
 if (program.shift && program.action) {
-  worker(program.input, program.output);
+  worker(program.input, program.output, program.shift, program.action);
 }

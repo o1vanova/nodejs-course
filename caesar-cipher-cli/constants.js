@@ -1,6 +1,6 @@
 const encode = 'encode';
 const decode = 'decode';
-const types = [ encode, decode ];
+const types = [encode, decode];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const mod = alphabet.length;
 
@@ -10,4 +10,4 @@ module.exports = {
   types,
   alphabet,
   mod
-}
+};
