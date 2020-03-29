@@ -1,3 +1,4 @@
+/* eslint-disable no-sync */
 const fs = require('fs');
 const { pipeline, Transform } = require('stream');
 const { StringDecoder } = require('string_decoder');
@@ -44,17 +45,21 @@ function worker(input, output, shift, type) {
   });
 }
 
-function getStream(path, isStdin = true) {
-  if (!path) {
-    return isStdin ? process.stdin : process.stdout;
-    // eslint-disable-next-line no-sync
-  } else if (fs.existsSync(path)) {
-    const options = {};
-    return isStdin
-      ? fs.createReadStream(path, options)
-      : fs.createWriteStream(path, options);
+function getStream(path, isRead = true) {
+  try {
+    if (!path) {
+      return isRead ? process.stdin : process.stdout;
+    } else if (fs.existsSync(path)) {
+      fs.accessSync(path, isRead ? fs.constants.R_OK : fs.constants.W_OK);
+      const options = {};
+      return isRead
+        ? fs.createReadStream(path, options)
+        : fs.createWriteStream(path, options);
+    }
+    printError();
+  } catch (err) {
+    printError();
   }
-  printError();
 }
 
 function printError() {
